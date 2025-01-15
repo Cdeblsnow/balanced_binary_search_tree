@@ -19,6 +19,16 @@ class Tree
     @root = root
   end
 
+  def insert(value, node = @root)
+    return if node.nil? || value == node.data_attribute
+
+    insert(value, node.left_children) if node.data_attribute > value
+    return node.left_children = Node.new(value) if node.left_children.nil? && node.data_attribute > value
+
+    insert(value, node.right_children) if node.data_attribute < value
+    return node.right_children = Node.new(value) if node.right_children.nil? && node.data_attribute < value # rubocop:disable Style/RedundantReturn
+  end
+
   def pretty_print(node = @root, prefix = "", is_left = true)
     pretty_print(node.right_children, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right_children
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data_attribute}"
