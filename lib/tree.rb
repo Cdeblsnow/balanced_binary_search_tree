@@ -7,10 +7,7 @@ class Tree
     @arr = array.uniq.sort
   end
 
-  def build_tree(array = nil, start = nil, final = nil)
-    array = @arr if array.nil?
-    start = 0 if start.nil?
-    final = array.length - 1 if final.nil?
+  def build_tree(array = @arr, start = 0, final = @arr.length - 1)
     mid = (start + final) / 2
 
     return if start > final
