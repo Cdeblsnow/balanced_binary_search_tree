@@ -29,25 +29,14 @@ class Tree
     return node.right_children = Node.new(value) if node.right_children.nil? && node.data_attribute < value # rubocop:disable Style/RedundantReturn
   end
 
-  def delete(value, current_node = @root)
+  def delete(value, current_node = @root, parent = nil, side = "")
     return nil if current_node.nil?
 
-    next_right_node = current_node.right_children
-    next_left_node = current_node.left_children
-
-    # first case, node with no children
-    if next_right_node.data_attribute == value && next_right_node.right_children.nil? && next_right_node.left_children.nil?
-      return current_node.right_children = nil
-
+    if current_node.data_attribute == value && (current_node.right_children.nil? && current_node.left_children.nil?) # first case, node with no children
+      side == "r" ? parent.right_children = nil : parent.left_children = nil
     end
-
-    if next_left_node.data_attribute == value && next_left_node.right_children.nil? && next_left_node.left_children.nil?
-      return current_node.left_children = nil
-
-    end
-
-    delete(value, current_node.right_children) if current_node.data_attribute < value
-    delete(value, current_node.left_children) if current_node.data_attribute > value
+    delete(value, current_node.right_children, current_node, "r") if current_node.data_attribute < value
+    delete(value, current_node.left_children, current_node, "r") if current_node.data_attribute > value
   end
 
   def pretty_print(node = @root, prefix = "", is_left = true)
