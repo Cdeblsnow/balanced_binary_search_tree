@@ -39,6 +39,8 @@ class Tree
       elsif (current_node.right_children.nil? && current_node.left_children) ||
             (current_node.left_children.nil? && current_node.right_children)
         delete_case_two(value, current_node, parent, side)
+      else
+        delete_case_three(value, current_node, parent, side)
       end
       return
     end
@@ -47,13 +49,32 @@ class Tree
     delete(value, current_node.left_children, current_node, "l") if current_node.data_attribute > value
   end
 
-  def delete_case_two(value, current_node, parent, side)
+  def delete_case_two(value, current_node, parent, side) # node with one children
     if side == "r"
       parent.right_children = current_node.right_children
     else
       parent.left_children = current_node.left_children
     end
     value
+  end
+
+  def delete_case_three(value, current_node, parent, side)
+    return nil if current_node.nil?
+
+    if current_node.data_attribute > value && current_node.left_children.nil? && side == "r"
+      parent.right_children = current_node
+    elsif current_node.data_attribute > value && current_node.left_children.nil? == false && side == "r"
+      parent.right_children = current_node.left_children
+    elsif current_node.data_attribute > value && current_node.left_children.nil? && side == "l"
+      parent.left_children = current_node
+    elsif current_node.data_attribute > value && current_node.left_children.nil? == false && side == "l"
+      parent.left_children = current_node.left_children
+    end
+
+    delete_case_three(value, current_node.left_children, parent, side) if current_node.data_attribute > value
+    delete_case_three(value, current_node.right_children, parent, side) if current_node.data_attribute <= value
+
+    current_node
   end
 
   def pretty_print(node = @root, prefix = "", is_left = true)
