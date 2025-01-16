@@ -62,13 +62,13 @@ class Tree
     return nil if current_node.nil?
 
     if current_node.data_attribute > value && current_node.left_children.nil? && side == "r"
-      parent.right_children = current_node
+      parent.right_children.data_attribute = current_node.data_attribute
     elsif current_node.data_attribute > value && current_node.left_children.nil? == false && side == "r"
-      parent.right_children = current_node.left_children
+      parent.right_children.data_attribute = current_node.left_children.data_attribute
     elsif current_node.data_attribute > value && current_node.left_children.nil? && side == "l"
-      parent.left_children = current_node
+      parent.left_children.data_attribute = current_node.data_attribute
     elsif current_node.data_attribute > value && current_node.left_children.nil? == false && side == "l"
-      parent.left_children = current_node.left_children
+      parent.left_children.data_attribute = current_node.left_children.data_attribute
     end
 
     delete_case_three(value, current_node.left_children, parent, side) if current_node.data_attribute > value
