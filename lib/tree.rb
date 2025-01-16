@@ -12,7 +12,7 @@ class Tree
 
     return if start > final
 
-    root = Node.new(mid)
+    root = Node.new(array[mid])
     root.left_children = build_tree(array, start, mid - 1)
     root.right_children = build_tree(array, mid + 1, final)
 
@@ -32,11 +32,28 @@ class Tree
   def delete(value, current_node = @root, parent = nil, side = "")
     return nil if current_node.nil?
 
-    if current_node.data_attribute == value && (current_node.right_children.nil? && current_node.left_children.nil?) # first case, node with no children
-      side == "r" ? parent.right_children = nil : parent.left_children = nil
+    if current_node.data_attribute == value
+      if current_node.right_children.nil? && current_node.left_children.nil? # first case, node with no children
+        side == "r" ? parent.right_children = nil : parent.left_children = nil
+
+      elsif (current_node.right_children.nil? && current_node.left_children) ||
+            (current_node.left_children.nil? && current_node.right_children)
+        delete_case_two(value, current_node, parent, side)
+      end
+      return
     end
+
     delete(value, current_node.right_children, current_node, "r") if current_node.data_attribute < value
-    delete(value, current_node.left_children, current_node, "r") if current_node.data_attribute > value
+    delete(value, current_node.left_children, current_node, "l") if current_node.data_attribute > value
+  end
+
+  def delete_case_two(value, current_node, parent, side)
+    if side == "r"
+      parent.right_children = current_node.right_children
+    else
+      parent.left_children = current_node.left_children
+    end
+    value
   end
 
   def pretty_print(node = @root, prefix = "", is_left = true)
