@@ -49,7 +49,8 @@ class Tree
     delete(value, current_node.left_children, current_node, "l") if current_node.data_attribute > value
   end
 
-  def delete_case_two(value, current_node, parent, side) # node with one children
+  # node with one children
+  def delete_case_two(value, current_node, parent, side)
     if side == "r"
       parent.right_children = current_node.right_children
     else
