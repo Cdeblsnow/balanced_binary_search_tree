@@ -58,23 +58,35 @@ class Tree
     value
   end
 
-  def delete_case_three(value, current_node, parent, side)
+  def delete_case_three(value, current_node, parent, side, current_parent = nil)
     return nil if current_node.nil?
 
+    case_three_extension(value, current_node, parent, side, current_parent)
+
+    if current_node.data_attribute > value
+      delete_case_three(value, current_node.left_children, parent, side,
+                        current_parent = current_node)
+    end
+    return unless current_node.data_attribute <= value
+
+    delete_case_three(value, current_node.right_children, parent, side,
+                      current_parent = current_node)
+  end
+
+  def case_three_extension(value, current_node, parent, side, current_parent)
     if current_node.data_attribute > value && current_node.left_children.nil? && side == "r"
+      delete(current_node.data_attribute, current_parent)
       parent.right_children.data_attribute = current_node.data_attribute
     elsif current_node.data_attribute > value && current_node.left_children.nil? == false && side == "r"
+      delete(current_node.data_attribute, current_parent)
       parent.right_children.data_attribute = current_node.left_children.data_attribute
     elsif current_node.data_attribute > value && current_node.left_children.nil? && side == "l"
+      delete(current_node.data_attribute, current_parent)
       parent.left_children.data_attribute = current_node.data_attribute
     elsif current_node.data_attribute > value && current_node.left_children.nil? == false && side == "l"
+      delete(current_node.data_attribute, current_parent)
       parent.left_children.data_attribute = current_node.left_children.data_attribute
     end
-
-    delete_case_three(value, current_node.left_children, parent, side) if current_node.data_attribute > value
-    delete_case_three(value, current_node.right_children, parent, side) if current_node.data_attribute <= value
-
-    current_node
   end
 
   def pretty_print(node = @root, prefix = "", is_left = true)
