@@ -88,14 +88,15 @@ class Tree
     @find
   end
 
-  def level_order(current_node = @root, arr = [])
-    return nil if current_node.nil?
+  def level_order(current_node = @root)
+    arr = []
+    arr += [current_node]
+    while arr
+      break if arr[0].nil?
 
-    while arr.length > 0
-      arr += [current_node]
       yield arr[0].data_attribute
-      arr += [current_node.left_children]
-      arr += [current_node.right_children]
+      arr << arr[0].left_children
+      arr << arr[0].right_children
       arr = arr.drop(1)
     end
   end
