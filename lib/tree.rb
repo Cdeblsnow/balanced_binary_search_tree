@@ -88,6 +88,18 @@ class Tree
     @find
   end
 
+  def level_order(current_node = @root, arr = [])
+    return nil if current_node.nil?
+
+    while arr.length > 0
+      arr += [current_node]
+      yield arr[0].data_attribute
+      arr += [current_node.left_children]
+      arr += [current_node.right_children]
+      arr = arr.drop(1)
+    end
+  end
+
   def pretty_print(node = @root, prefix = "", is_left = true)
     pretty_print(node.right_children, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right_children
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data_attribute}"
