@@ -5,6 +5,7 @@ class Tree
   def initialize(array)
     @root = nil
     @arr = array.uniq.sort
+    @find = nil
   end
 
   def build_tree(array = @arr, start = 0, final = @arr.length - 1)
@@ -75,6 +76,16 @@ class Tree
     else
       parent.left_children = successor.right_children
     end
+  end
+
+  def find(value, current_node = @root)
+    return nil if current_node.nil?
+
+    @find = current_node if current_node.data_attribute == value
+    find(value, current_node.right_children) if current_node.data_attribute < value
+    find(value, current_node.left_children) if current_node.data_attribute > value
+
+    @find
   end
 
   def pretty_print(node = @root, prefix = "", is_left = true)
