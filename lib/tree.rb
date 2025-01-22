@@ -101,29 +101,12 @@ class Tree
     end
   end
 
-  def inorder(current_node = @root)
-    arr = []
-    arr += [current_node.left_children]
-    while arr
-      break if arr[0].nil?
+  def inorder(current_node = @root, &block)
+    return if current_node.nil?
 
-      yield arr[0].data_attribute
-      arr << arr[0].left_children
-      arr << arr[0].right_children
-      arr = arr.drop(1)
-    end
-
-    arr = [current_node.right_children]
-    yield arr[0].data_attribute
-
-    while arr
-      break if arr[0].nil?
-
-      yield arr[0].data_attribute
-      arr << arr[0].left_children
-      arr << arr[0].right_children
-      arr = arr.drop(1)
-    end
+    inorder(current_node.left_children, &block)
+    yield current_node.data_attribute
+    inorder(current_node.right_children, &block)
   end
 
   def pretty_print(node = @root, prefix = "", is_left = true)
