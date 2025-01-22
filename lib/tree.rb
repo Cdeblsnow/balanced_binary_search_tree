@@ -60,6 +60,7 @@ class Tree
     value
   end
 
+  # node with two children
   def delete_case_three(current_node)
     parent = current_node
     successor = current_node.right_children
