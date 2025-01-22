@@ -101,6 +101,31 @@ class Tree
     end
   end
 
+  def inorder(current_node = @root)
+    arr = []
+    arr += [current_node.left_children]
+    while arr
+      break if arr[0].nil?
+
+      yield arr[0].data_attribute
+      arr << arr[0].left_children
+      arr << arr[0].right_children
+      arr = arr.drop(1)
+    end
+
+    arr = [current_node.right_children]
+    yield arr[0].data_attribute
+
+    while arr
+      break if arr[0].nil?
+
+      yield arr[0].data_attribute
+      arr << arr[0].left_children
+      arr << arr[0].right_children
+      arr = arr.drop(1)
+    end
+  end
+
   def pretty_print(node = @root, prefix = "", is_left = true)
     pretty_print(node.right_children, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right_children
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data_attribute}"
