@@ -102,28 +102,46 @@ class Tree
     end
   end
 
-  def inorder(current_node = @root, &block)
+  def inorder(current_node = @root, arr = [], &block)
     return if current_node.nil?
 
-    inorder(current_node.left_children, &block)
-    yield current_node.data_attribute
-    inorder(current_node.right_children, &block)
+    inorder(current_node.left_children, arr, &block)
+    if block
+      yield current_node.data_attribute
+    else
+      arr << current_node.data_attribute
+    end
+    inorder(current_node.right_children, arr, &block)
+
+    arr if arr.nil? == false
   end
 
-  def preorder(current_node = @root, &block)
+  def preorder(current_node = @root, arr = [], &block)
     return nil if current_node.nil?
 
-    yield current_node.data_attribute
-    preorder(current_node.left_children, &block)
-    preorder(current_node.right_children, &block)
+    if block
+      yield current_node.data_attribute
+    else
+      arr << current_node.data_attribute
+    end
+    preorder(current_node.left_children, arr, &block)
+    preorder(current_node.right_children, arr, &block)
+
+    arr if arr.nil? == false
   end
 
-  def postorder(current_node = @root, &block)
+  def postorder(current_node = @root, arr = [], &block)
     return if current_node.nil?
 
-    postorder(current_node.left_children, &block)
-    postorder(current_node.right_children, &block)
-    yield current_node.data_attribute
+    postorder(current_node.left_children, arr, &block)
+    postorder(current_node.right_children, arr, &block)
+    if block
+      yield current_node.data_attribute
+    else
+      arr << current_node.data_attribute
+    end
+
+    arr if arr.nil? == false
   end
 
   def pretty_print(node = @root, prefix = "", is_left = true)
