@@ -118,6 +118,14 @@ class Tree
     preorder(current_node.right_children, &block)
   end
 
+  def postorder(current_node = @root, &block)
+    return if current_node.nil?
+
+    postorder(current_node.left_children, &block)
+    postorder(current_node.right_children, &block)
+    yield current_node.data_attribute
+  end
+
   def pretty_print(node = @root, prefix = "", is_left = true)
     pretty_print(node.right_children, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right_children
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data_attribute}"
