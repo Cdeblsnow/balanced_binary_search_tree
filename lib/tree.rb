@@ -144,6 +144,24 @@ class Tree
     arr if arr.nil? == false
   end
 
+  def height(node, edges_to_leaf_right = 0, edges_to_leaf_left = 0, side = "")
+    if node.nil? && side == "r"
+      return edges_to_leaf_right
+    elsif node.nil?
+      return edges_to_leaf_left
+    end
+
+    left_height = height(node.left_children, edges_to_leaf_right, edges_to_leaf_left, side = "l")
+    right_height = height(node.right_children, edges_to_leaf_right, edges_to_leaf_left, side = "r")
+
+    if side == "r"
+      edges_to_leaf_right += 1
+    else
+      edges_to_leaf_left += 1
+    end
+    [left_height, right_height].max + 1
+  end
+
   def pretty_print(node = @root, prefix = "", is_left = true)
     pretty_print(node.right_children, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right_children
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data_attribute}"
