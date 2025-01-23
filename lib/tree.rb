@@ -159,6 +159,7 @@ class Tree
     else
       edges_to_leaf_left += 1
     end
+
     [left_height, right_height].max + 1
   end
 
