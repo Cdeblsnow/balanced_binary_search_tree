@@ -151,10 +151,11 @@ class Tree
   end
 
   def depth(node, root = @root)
-    return 0 if node == root
+    return 0 if root.nil?
 
-    1 + depth(node, root.right_children) if root.data_attribute < node.data_attribute
-    1 + depth(node, root.left_children) if root.data_attribute > node.data_attribute
+    return 0 if node.data_attribute == root.data_attribute
+
+    [depth(node, root.left_children), depth(node, root.right_children)].min + 1
   end
 
   def pretty_print(node = @root, prefix = "", is_left = true)
