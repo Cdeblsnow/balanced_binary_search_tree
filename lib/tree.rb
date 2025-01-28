@@ -158,12 +158,31 @@ class Tree
     [depth(node, root.left_children), depth(node, root.right_children)].min + 1
   end
 
-  def balanced?(current_node = @root)
-    return nil if current_node.nil?
-
-    return true if height(current_node.left_children) - height(current_node.left_children) <= 1
+  def balanced?
+    # compare first right and left children
+    if height(@root.left_children) - height(@root.right_children) <= 1 && right_balance == true && left_balance == true
+      return true
+    end
 
     false
+  end
+
+  def left_balance(left = @root.left_children, right = left) # skip first left children
+    return 0 if left.nil? || right.nil?
+
+    left_balance(left.left_children, right.right_children)
+    return false if height(left.left_children) - height(right.left_children) > 1
+
+    true
+  end
+
+  def right_balance(right = @root.right_children, left = right) # skip first right children
+    return 0 if left.nil? || right.nil?
+
+    right_balance(left.left_children, right.right_children)
+    return false if height(left.left_children) - height(right.left_children) > 1
+
+    true
   end
 
   def pretty_print(node = @root, prefix = "", is_left = true)
