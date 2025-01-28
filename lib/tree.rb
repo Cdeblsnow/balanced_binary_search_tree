@@ -158,31 +158,19 @@ class Tree
     [depth(node, root.left_children), depth(node, root.right_children)].min + 1
   end
 
-  def balanced?
-    # compare first right and left children
-    if height(@root.left_children) - height(@root.right_children) <= 1 && right_balance == true && left_balance == true
+  def balanced?(left = @root.left_children, right = @root.right_children)
+    if left.nil? && right.nil?
       return true
+    elsif left.nil?
+      return height(right) <= 1
+    elsif right.nil?
+      return height(left) <= 1
     end
 
-    false
-  end
+    return false unless balanced?(left.left_children, right.right_children)
+    return false unless balanced?(left.right_children, right.left_children)
 
-  def left_balance(left = @root.left_children, right = left) # skip first left children
-    return 0 if left.nil? || right.nil?
-
-    left_balance(left.left_children, right.right_children)
-    return false if height(left.left_children) - height(right.left_children) > 1
-
-    true
-  end
-
-  def right_balance(right = @root.right_children, left = right) # skip first right children
-    return 0 if left.nil? || right.nil?
-
-    right_balance(left.left_children, right.right_children)
-    return false if height(left.left_children) - height(right.left_children) > 1
-
-    true
+    return true unless height(left) - height(right) > 1 # rubocop:disable Style/RedundantReturn
   end
 
   def rebalance(tree = @root, arr = [])
