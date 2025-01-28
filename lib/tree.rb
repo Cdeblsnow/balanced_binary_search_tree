@@ -173,14 +173,17 @@ class Tree
     return true unless height(left) - height(right) > 1 # rubocop:disable Style/RedundantReturn
   end
 
-  def rebalance(tree = @root, arr = [])
-    return if tree.nil?
+  def rebalance(current_node = @root, arr = []) # preorder
+    return nil if current_node.nil?
 
-    rebalance(tree.left_children, arr)
-    rebalance(tree.right_children, arr)
+    return nil if current_node.nil?
 
-    arr << tree if tree.nil? == false
-    build_tree(arr)
+    arr << current_node.data_attribute
+
+    preorder(current_node.left_children, arr)
+    preorder(current_node.right_children, arr)
+
+    @arr = arr && build_tree if arr.nil? == false
   end
 
   def pretty_print(node = @root, prefix = "", is_left = true)
