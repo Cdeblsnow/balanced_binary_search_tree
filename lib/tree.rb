@@ -158,6 +158,14 @@ class Tree
     [depth(node, root.left_children), depth(node, root.right_children)].min + 1
   end
 
+  def balanced?(current_node = @root)
+    return nil if current_node.nil?
+
+    return true if height(current_node.left_children) - height(current_node.left_children) <= 1
+
+    false
+  end
+
   def pretty_print(node = @root, prefix = "", is_left = true)
     pretty_print(node.right_children, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right_children
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data_attribute}"
