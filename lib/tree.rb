@@ -185,6 +185,16 @@ class Tree
     true
   end
 
+  def rebalance(tree = @root, arr = [])
+    return if tree.nil?
+
+    rebalance(tree.left_children, arr)
+    rebalance(tree.right_children, arr)
+
+    arr << tree if tree.nil? == false
+    build_tree(arr)
+  end
+
   def pretty_print(node = @root, prefix = "", is_left = true)
     pretty_print(node.right_children, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right_children
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data_attribute}"
